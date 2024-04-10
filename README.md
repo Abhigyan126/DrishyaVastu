@@ -1,6 +1,6 @@
 # drishya_vastu
 
-We are working on a package named as drishya_vaastu which is meant for image processing.
-The name is derived from sanskrit where:
--> drishya is translated as image
+We are working on a package named as drishya_vaastu which is meant for image processing.<br>
+The name is derived from sanskrit where:<br>
+-> drishya is translated as image<br>
 -> vaastu is translated as architecture
