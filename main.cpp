@@ -1,38 +1,29 @@
-// main.cpp
 #include <iostream>
 #include "image_utils.h"
 
-int main() {
-    // Example usage:
-    // Create a sample flattened array
-    int flattened_image[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+using namespace std;
 
-    // Dimensions of the original image
-    int height = 2;
-    int width = 2;
-    int channels = 3;
+extern "C" {
+    int* PrintArray(int* data, int height, int width, int channels) {
+        // Reconstruct the 3D image array from the flattened array
+        int*** image = ImageUtils::unflatten_image(data, height, width, channels);
 
-    // Reconstruct the image
-    int*** reconstructed_image = ImageUtils::unflatten_image(flattened_image, height, width, channels);
+        // Flatten the 3D image array back into a 1D array
+        int* result = ImageUtils::flatten_image(image, height, width, channels);
 
-    // Print the reconstructed image
-    for (int i = 0; i < height; ++i) {
-        for (int j = 0; j < width; ++j) {
-            for (int k = 0; k < channels; ++k) {
-                std::cout << reconstructed_image[i][j][k] << " ";
+        // Free memory allocated for the 3D array
+        for (int i = 0; i < height; ++i) {
+            for (int j = 0; j < width; ++j) {
+                delete[] image[i][j];
             }
+            delete[] image[i];
         }
-        std::cout << std::endl;
-    }
+        delete[] image;
 
-    // Don't forget to delete the allocated memory
-    for (int i = 0; i < height; ++i) {
-        for (int j = 0; j < width; ++j) {
-            delete[] reconstructed_image[i][j];
-        }
-        delete[] reconstructed_image[i];
+        return result;
     }
-    delete[] reconstructed_image;
+}
 
+int main() {
     return 0;
 }

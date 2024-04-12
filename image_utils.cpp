@@ -14,3 +14,20 @@ int*** ImageUtils::unflatten_image(int* flattened_image, int height, int width, 
     }
     return image;
 }
+
+int* ImageUtils::flatten_image(int*** threedimage, int height, int width, int channels) {
+    int total_elements = height * width * channels;
+
+    int* flattened_image = new int[total_elements];
+
+    int index = 0;
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
+            for (int k = 0; k < channels; ++k) {
+                flattened_image[index++] = threedimage[i][j][k];
+            }
+        }
+    }
+
+    return flattened_image;
+}
