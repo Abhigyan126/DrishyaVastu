@@ -31,3 +31,22 @@ int* ImageUtils::flatten_image(int*** threedimage, int height, int width, int ch
 
     return flattened_image;
 }
+
+int*** ImageUtils::grey_scal(int*** data, int height, int width, int channels) {
+    for (int i = 0; i < height; ++i) {
+            for (int j = 0; j < width; ++j) {
+                // Calculate grayscale intensity
+                int grayscale = 0;
+                for (int c = 0; c < channels; ++c) {
+                    grayscale += data[i][j][c];
+                }
+                grayscale /= channels;
+
+                // Assign grayscale intensity to a single channel
+                for (int c = 0; c < channels; ++c) {
+                    data[i][j][c] = grayscale;
+                }
+            }
+        }
+    return data;
+}

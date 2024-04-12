@@ -18,7 +18,7 @@ class ArrayDimentionTransform:
                 flat.extend(col)
         return flat
 
-    def unflat_image(self, arr, width, height, channels):
+    def unflat_image(self, arr, height, width, channels):
         """
         Reconstruct a flattened 1D image array back into a 3D image array.
 
