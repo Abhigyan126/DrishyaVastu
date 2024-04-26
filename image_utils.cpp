@@ -1,4 +1,5 @@
 // image_utils.cpp
+#include<iostream>
 #include "image_utils.h"
 
 int*** ImageUtils::unflatten_image(int* flattened_image, int height, int width, int channels) {
@@ -46,6 +47,17 @@ int*** ImageUtils::grey_scal(int*** data, int height, int width, int channels) {
                 for (int c = 0; c < channels; ++c) {
                     data[i][j][c] = grayscale;
                 }
+            }
+        }
+    return data;
+}
+
+int*** ImageUtils::brightness(int*** data, int height, int width, int channels, int per_r, int per_g, int per_b) {
+        for(int i = 0; i < height; ++i){
+            for(int j = 0; j < width; ++j) {
+                data[i][j][0] = std::min(255, (int)(data[i][j][0] + data[i][j][0] * per_b / 100.0));
+                data[i][j][1] = std::min(255, (int)(data[i][j][1] + data[i][j][1] * per_g / 100.0));
+                data[i][j][2] = std::min(255, (int)(data[i][j][2] + data[i][j][2] * per_r / 100.0));
             }
         }
     return data;
