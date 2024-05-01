@@ -34,3 +34,18 @@ class ImageEngine():
         if brighten and self.debug == True:
             print("Image generated")
         return brighten
+    def contrast(self, data, height, width, rate, channels = 3):
+        cfile = ctypes.CDLL('./contrast.so')
+        cfile.contrast.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
+        cfile.contrast.restype = ctypes.POINTER(ctypes.c_int)
+        data = art.flatten_image(data)
+        data_array = (ctypes.c_int * len(data))(*data)
+        result_ptr = cfile.contrast(data_array, height, width, channels, rate)
+        result = [result_ptr[i] for i in range(height * width * channels)]
+        if self.debug:
+            print(result)
+        contrast = art.unflat_image(result, height, width, channels)
+        if contrast and self.debug == True:
+            print("Image generated")
+        return contrast
+    
