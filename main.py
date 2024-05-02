@@ -3,12 +3,12 @@ import cv2
 import numpy
 engine = ImageEngine(debug=True)
 
-data = cv2.imread("sample_640×426.ppm")
-height = 426
-width = 640
+data = cv2.imread("img.jpg")
+height = 720
+width = 1280
 channels = 3
-rate = 2
+ext_channel = 0
 
-data = engine.contrast(data, height, width, rate, channels=3)
+data = engine.keepmaxchannel(data, height, width, channels=3)
 data = numpy.array(data)
 cv2.imwrite("result.png", data, params=None)

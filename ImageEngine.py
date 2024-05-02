@@ -48,4 +48,31 @@ class ImageEngine():
         if contrast and self.debug == True:
             print("Image generated")
         return contrast
-    
+    def channel_extract(self, data, height, width, ext_channel, channels =3):
+        cfile = ctypes.CDLL('./channel_extraction.so')
+        cfile.channel_extraction.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
+        cfile.channel_extraction.restype = ctypes.POINTER(ctypes.c_int)
+        data = art.flatten_image(data)
+        data_array = (ctypes.c_int * len(data))(*data)
+        result_ptr = cfile.channel_extraction(data_array, height, width, channels, ext_channel)
+        result = [result_ptr[i] for i in range(height * width * channels)]
+        if self.debug:
+            print(result)
+        channel_extracted = art.unflat_image(result, height, width, channels)
+        if channel_extracted and self.debug == True:
+            print("Image generated")
+        return channel_extracted
+    def keepmaxchannel(self, data, height, width, channels =3):
+        cfile = ctypes.CDLL('./keepmaxchannel.so')
+        cfile.keep_max_channel.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_int, ctypes.c_int, ctypes.c_int]
+        cfile.keep_max_channel.restype = ctypes.POINTER(ctypes.c_int)
+        data = art.flatten_image(data)
+        data_array = (ctypes.c_int * len(data))(*data)
+        result_ptr = cfile.keep_max_channel(data_array, height, width, channels)
+        result = [result_ptr[i] for i in range(height * width * channels)]
+        if self.debug:
+            print(result)
+        max_channel = art.unflat_image(result, height, width, channels)
+        if max_channel and self.debug == True:
+            print("Image generated")
+        return max_channel
