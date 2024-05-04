@@ -1,5 +1,6 @@
 // image_utils.cpp
 #include<iostream>
+#include<cmath>
 #include "image_utils.h"
 
 int*** ImageUtils::unflatten_image(int* flattened_image, int height, int width, int channels) {
@@ -138,5 +139,37 @@ int*** ImageUtils::merge_images(int*** image1, int height1, int width1, int*** i
     }
     return merged_image;
 }
+int*** ImageUtils::sobel_edge_detection(int*** data, int height, int width, int channels) {
+    int*** edges = new int**[height];
+    for (int i = 0; i < height; ++i) {
+        edges[i] = new int*[width];
+        for (int j = 0; j < width; ++j) {
+            edges[i][j] = new int[channels];
+            for (int c = 0; c < channels; ++c) {
+                edges[i][j][c] = 0;
+            }
+        }
+    }
 
+    int sobel_x[3][3] = {{-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
+    int sobel_y[3][3] = {{-1, -2, -1}, {0, 0, 0}, {1, 2, 1}};
+
+    for (int i = 1; i < height - 1; ++i) {
+        for (int j = 1; j < width - 1; ++j) {
+            for (int c = 0; c < channels; ++c) {
+                int gx = 0;
+                int gy = 0;
+                for (int k = -1; k <= 1; ++k) {
+                    for (int l = -1; l <= 1; ++l) {
+                        gx += data[i + k][j + l][c] * sobel_x[k + 1][l + 1];
+                        gy += data[i + k][j + l][c] * sobel_y[k + 1][l + 1];
+                    }
+                }
+                edges[i][j][c] = std::min(255, std::max(0, static_cast<int>(sqrt(gx * gx + gy * gy))));
+            }
+        }
+    }
+
+    return edges;
+}
 

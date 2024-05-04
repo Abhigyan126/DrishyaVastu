@@ -76,3 +76,17 @@ class ImageEngine():
         if max_channel and self.debug == True:
             print("Image generated")
         return max_channel
+    def sobel_edge_detection(self, data, height, width, channels =3):
+        cfile = ctypes.CDLL('./sobel_edge.so')
+        cfile.sobel_edge_detection.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_int, ctypes.c_int, ctypes.c_int]
+        cfile.sobel_edge_detection.restype = ctypes.POINTER(ctypes.c_int)
+        data = art.flatten_image(data)
+        data_array = (ctypes.c_int * len(data))(*data)
+        result_ptr = cfile.sobel_edge_detection(data_array, height, width, channels)
+        result = [result_ptr[i] for i in range(height * width * channels)]
+        if self.debug:
+            print(result)
+        edge_image = art.unflat_image(result, height, width, channels)
+        if edge_image and self.debug == True:
+            print("Image generated")
+        return edge_image
