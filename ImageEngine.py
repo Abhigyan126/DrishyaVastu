@@ -1,5 +1,6 @@
 import ctypes
 from arrtransform import ArrayDimentionTransform
+import numpy as np
 art = ArrayDimentionTransform()
 
 class ImageEngine():
@@ -63,7 +64,7 @@ class ImageEngine():
             print("Image generated")
         return channel_extracted
     def keepmaxchannel(self, data, height, width, channels =3):
-        cfile = ctypes.CDLL('./keepmaxchannel.so')
+        cfile = ctypes.CDLL('./utility/keepmaxchannel.so')
         cfile.keep_max_channel.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_int, ctypes.c_int, ctypes.c_int]
         cfile.keep_max_channel.restype = ctypes.POINTER(ctypes.c_int)
         data = art.flatten_image(data)
@@ -77,7 +78,7 @@ class ImageEngine():
             print("Image generated")
         return max_channel
     def sobel_edge_detection(self, data, height, width, channels =3):
-        cfile = ctypes.CDLL('./sobel_edge.so')
+        cfile = ctypes.CDLL('./utility/sobel_edge.so')
         cfile.sobel_edge_detection.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_int, ctypes.c_int, ctypes.c_int]
         cfile.sobel_edge_detection.restype = ctypes.POINTER(ctypes.c_int)
         data = art.flatten_image(data)
@@ -90,3 +91,10 @@ class ImageEngine():
         if edge_image and self.debug == True:
             print("Image generated")
         return edge_image
+    def display(self, data, height, width, channels):
+            flattened_data = art.flatten_image(data)
+            data_array = (ctypes.c_int * len(flattened_data))(*flattened_data)
+            lib = ctypes.CDLL('./libimage_display.dylib')
+            lib.display_image.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_int, ctypes.c_int, ctypes.c_int]
+            lib.display_image(data_array, height, width, channels)
+
