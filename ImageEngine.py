@@ -97,4 +97,17 @@ class ImageEngine():
             lib = ctypes.CDLL('./libimage_display.dylib')
             lib.display_image.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_int, ctypes.c_int, ctypes.c_int]
             lib.display_image(data_array, height, width, channels)
-
+    def rotate(self, data, height, width, degree, channels =3):
+        cfile = ctypes.CDLL('./rotate.so')
+        cfile.rotate.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
+        cfile.rotate.restype = ctypes.POINTER(ctypes.c_int)
+        data = art.flatten_image(data)
+        data_array = (ctypes.c_int * len(data))(*data)
+        result_ptr = cfile.rotate(data_array, height, width, channels, degree)
+        result = [result_ptr[i] for i in range(height * width * channels)]
+        if self.debug:
+            print(result)
+        rotate_image = art.unflat_image(result, height, width, channels)
+        if rotate_image and self.debug == True:
+            print("Image generated")
+        return rotate_image

@@ -13,6 +13,6 @@ public:
     static int*** keep_max_channel(int*** data, int height, int width, int channels);
     static int*** merge_images(int*** image1, int height1, int width1, int*** image2, int height2, int width2, int channels);
     static int*** sobel_edge_detection(int*** data, int height, int width, int channels);
-
+    static int*** rotate(int*** data, int height, int width, int channels, int degree);
 };
 #endif

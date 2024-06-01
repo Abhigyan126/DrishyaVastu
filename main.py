@@ -3,17 +3,15 @@ import cv2
 import numpy
 engine = ImageEngine(debug=True)
 
-data = cv2.imread("image.jpg")
-height = 64
-width = 100
+data = cv2.imread("sample_640×426.ppm")
+height = 426
+width = 640
 channels = 3
+degree = 5
 ext_channel = 0
 
-data = engine.keepmaxchannel(data, height, width, channels)
+data = engine.rotate(data, height, width,degree, channels)
 
-data = engine.display(data, height, width, channels)
-
-"""
-data = numpy.array(data)
-cv2.imwrite("result.png", data, params=None)
-"""
+#data1 = numpy.array(data)
+#cv2.imwrite("result.png", data1, params=None)
+engine.display(data, height, width, channels)

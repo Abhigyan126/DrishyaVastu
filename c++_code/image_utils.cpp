@@ -2,6 +2,29 @@
 #include<iostream>
 #include<cmath>
 #include "image_utils.h"
+#include "ganit.hpp"
+
+int*** allocate_3d_array(int height, int width, int channels) {
+    int*** array = new int**[height];
+    for (int i = 0; i < height; ++i) {
+        array[i] = new int*[width];
+        for (int j = 0; j < width; ++j) {
+            array[i][j] = new int[channels];
+        }
+    }
+    return array;
+
+}
+
+void delocate_3d_array(int*** array, int height, int width) {
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
+            delete[] array[i][j];
+        }
+        delete[] array[i];
+    }
+    delete[] array;
+}
 
 int*** ImageUtils::unflatten_image(int* flattened_image, int height, int width, int channels) {
     int*** image = new int**[height];
@@ -173,3 +196,41 @@ int*** ImageUtils::sobel_edge_detection(int*** data, int height, int width, int 
     return edges;
 }
 
+int*** ImageUtils::rotate(int*** data, int height, int width, int channels, int degree) {
+    double radians = ganit::to_radians(degree);
+    double cos = ganit::cos(radians);
+    double sin = ganit::sin(radians);
+    int new_height = static_cast<int>(ganit::fabs(height*cos) + ganit::fabs(width*sin));
+    int new_width = static_cast<int>(ganit::fabs(height*sin) + ganit::fabs(width*cos));
+    int*** rotated = allocate_3d_array(new_height, new_width, channels);
+    
+    for (int i = 0; i < new_height; ++i) {
+        for (int j = 0; j < new_width; ++j) {
+            for (int c = 0; c < channels; ++c) {
+                rotated[i][j][c] = 0;
+            }
+        }
+    }
+
+    int cx_old = width / 2;
+    int cy_old = height / 2;
+    int cx_new = new_width / 2;
+    int cy_new = new_height / 2;
+
+    for (int i = 0; i < new_height; ++i) {
+        for (int j = 0; j < new_width; ++j) {
+            int x_old = static_cast<int>((j - cx_new) * cos + (i - cy_new) * sin + cx_old);
+            int y_old = static_cast<int>(-(j - cx_new) * sin + (i - cy_new) * cos + cy_old);
+
+            // Check if the coordinates are within the bounds of the original image
+            if (x_old >= 0 && x_old < width && y_old >= 0 && y_old < height) {
+                for (int c = 0; c < channels; ++c) {
+                    rotated[i][j][c] = data[y_old][x_old][c];
+                }
+            }
+        }
+    }
+
+    return rotated;
+
+}
