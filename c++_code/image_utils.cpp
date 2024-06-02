@@ -234,3 +234,19 @@ int*** ImageUtils::rotate(int*** data, int height, int width, int channels, int 
     return rotated;
 
 }
+
+int*** ImageUtils::crop(int*** data, int height, int width, int channels, int top, int bottom, int left, int right) {
+    int new_height = bottom - top + 1;
+    int new_width = right - left + 1;
+    int*** cropped = allocate_3d_array(new_height, new_width, channels);
+
+    for (int i = 0; i < new_height; ++i) {
+        for (int j = 0; j < new_width; ++j) {
+            for (int c = 0; c < channels; ++c) {
+                cropped[i][j][c] = data[top + i][left + j][c];
+            }
+        }
+    }
+
+    return cropped;
+}

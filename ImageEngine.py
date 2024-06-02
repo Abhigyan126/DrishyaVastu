@@ -111,3 +111,19 @@ class ImageEngine():
         if rotate_image and self.debug == True:
             print("Image generated")
         return rotate_image
+    def crop(self, data, height, width, top, bottom, left, right , channels = 3):
+        cfile = ctypes.CDLL('./crop.so')
+        cfile.crop.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
+        cfile.crop.restype = ctypes.POINTER(ctypes.c_int)
+        data = art.flatten_image(data)
+        data_array = (ctypes.c_int * len(data))(*data)
+        result_ptr = cfile.crop(data_array, height, width, channels, top, bottom, left, right)
+        height = bottom - top + 1
+        width = right - left + 1
+        result = [result_ptr[i] for i in range(height * width * channels)]
+        if self.debug:
+            print(result)
+        crop_image = art.unflat_image(result, height, width, channels)
+        if crop_image and self.debug == True:
+            print("Image generated")
+        return [crop_image, height, width]

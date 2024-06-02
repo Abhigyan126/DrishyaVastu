@@ -9,9 +9,13 @@ width = 640
 channels = 3
 degree = 5
 ext_channel = 0
-
-data = engine.rotate(data, height, width,degree, channels)
-
-#data1 = numpy.array(data)
-#cv2.imwrite("result.png", data1, params=None)
-engine.display(data, height, width, channels)
+top = 50
+bottom = 100
+left = 200
+right = 300
+data = engine.crop(data, height, width, top, bottom, left, right, channels)
+data1 = numpy.array(data[0])
+cv2.imwrite("result.png", data1, params=None)
+height = data[1]
+width = data[2]
+engine.display(data[0], height, width, channels)
