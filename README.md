@@ -11,6 +11,6 @@ The name is derived from sanskrit where:<br>
 ![3](https://github.com/user-attachments/assets/d461c858-02ac-4437-87b2-03e5f8f9cb49)
 <br>
 <br>
-![Uploading Untitled-2.png…]()
+![Untitled-2](https://github.com/user-attachments/assets/ecd71eb9-03cc-40b1-8807-eb68bc5508d3)
 
 </p>
