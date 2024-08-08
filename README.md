@@ -7,7 +7,11 @@ The name is derived from sanskrit where:<br>
 -> vaastu is translated as architecture
 
 <p align="center">
-![Untitled-2](https://github.com/user-attachments/assets/df69fbdd-d1a5-4f16-adb2-6d5d747324e2)
 
-![3](https://github.com/user-attachments/assets/8f9ec029-0b50-4e3a-9d99-500b3529fc5a)
+
+
+![3](https://github.com/user-attachments/assets/d461c858-02ac-4437-87b2-03e5f8f9cb49)
+![Untitled-2](https://github.com/user-attachments/assets/46a56537-a741-4f6d-975f-f2533c9b6af6)
+
+
 </p>
