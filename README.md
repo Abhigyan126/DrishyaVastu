@@ -50,7 +50,7 @@ from imageengine import ImageEngine
 
 engine = ImageEngine()
 grey_image = engine.grey_scale(image_data, height, width)
-
+```
 
 The name is derived from sanskrit where:<br>
 -> drishya is translated as image<br>
