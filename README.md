@@ -66,3 +66,7 @@ The name is derived from sanskrit where:<br>
 ![Untitled-2](https://github.com/user-attachments/assets/ecd71eb9-03cc-40b1-8807-eb68bc5508d3)
 
 </p>
+
+### note: 
+- for mac/linux -> .so
+- for windows   -> .pyd
